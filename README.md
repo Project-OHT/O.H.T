@@ -43,8 +43,8 @@ Usage :
 
 ---------------------
 Can not :
-- You cant use charge and brute argument at the same time [WTD.py]
-- You cant use slow and other(except quiet) argument at the same time [WTD.py]
+- You cant use 2 or more attack [oht.py]
+- You must sellect an attack [oht.py]
 
 ---------------------
 Contributors :
@@ -59,8 +59,8 @@ Contributors :
     style="float:left;">
 
 ---------------------
-Have an Issue ? Report [Here!](https://github.com/Project-DOW/D.O.W/issues/new)
-> Contact : teamdowproject@gmail.com
+Have an Issue ? Report [Here!](https://github.com/Project-OHT/O.H.T/issues/new)
+> Contact : teamprojectoht@gmail.com
 ---------------------
 This project hosted by
 <p>
